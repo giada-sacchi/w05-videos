@@ -1,34 +1,36 @@
 import numpy as np
 
-
-def bi_section(f, a, b):
+def bi_section(f, a, b, tol=1e-8):
     '''
     This is a function that calculates a root for given function "f"
     in the interval [a, b]
-    inputs:
+
+    Inputs:
     f : the function for which we calculate the root
     a : the beginning of the interval
     b : the end of interval
     '''
 
+    # if any of the endpoints is an exact root, return it
+    if f(a) == 0:
+        return a
+    elif f(b) == 0:
+        return b
+
     # the main while loop to check
     # if we are close enough to the desired tolerance
-    while abs(b-a) > 1e-8:
-        # we have chosen the tolerance to be 1e-8 but we can consider
-        # to give it as a parameter to the function
+    # we have chosen the tolerance to be 1e-8 but we can consider
+    # to give it as a parameter to the function
+    while abs(b-a) > tol:
+
         c = (a+b)/2  # derive the mid point
-        if f(a)*f(c) < 0:
-            b = c
-        elif f(b)*f(c) < 0:
-            a = c
-        # catch the cases where the end of intervals or mid point
-        # the exact root
-        elif f(a) == 0:
-            return a
-        elif f(b) == 0:
-            return b
-        elif f(c) == 0:
+
+        if f(c) == 0:
             return c
+        elif f(a)*f(c) < 0:
+            b = c
+        else:
+            a = c
 
     return (a+b)/2
 
